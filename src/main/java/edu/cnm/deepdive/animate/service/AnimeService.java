@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.net.URL;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Properties;
 import okhttp3.Interceptor;
@@ -32,6 +33,7 @@ public class AnimeService {
     Gson gson = new GsonBuilder()
         .excludeFieldsWithoutExposeAnnotation() // returns the builder again, but configured
         .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer())
+        .registerTypeAdapter(Instant.class, new InstantDeserializer())
         .create();
     Interceptor loggingInterceptor = new HttpLoggingInterceptor()
         .setLevel(Level.NONE); // BODY logs ALL to the console, including payloads; NONE logs nothing
@@ -86,6 +88,15 @@ public class AnimeService {
     public LocalDate deserialize(JsonElement jsonElement, Type type,
         JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
       return LocalDate.parse(jsonElement.getAsString());
+    }
+  }
+
+  private static class InstantDeserializer implements JsonDeserializer<Instant> {
+
+    @Override
+    public Instant deserialize(JsonElement jsonElement, Type type,
+        JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+      return Instant.parse(jsonElement.getAsString());
     }
   }
 

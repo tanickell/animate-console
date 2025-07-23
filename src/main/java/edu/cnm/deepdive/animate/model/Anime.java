@@ -3,6 +3,7 @@ package edu.cnm.deepdive.animate.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import java.net.URL;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -13,6 +14,9 @@ public class Anime {
 
   @Expose(serialize = false, deserialize = true)
   private String title;
+
+  @Expose(serialize = false, deserialize = true)
+  private Aired aired;
 
 
   Anime(String title) {
@@ -34,6 +38,14 @@ public class Anime {
 
   public void setTitle(String title) {
     this.title = title;
+  }
+
+  public Aired getAired() {
+    return aired;
+  }
+
+  public void setAired(Aired aired) {
+    this.aired = aired;
   }
 
 
@@ -141,6 +153,123 @@ public class Anime {
 
       public void setLargeImageUrl(String largeImageUrl) {
         this.largeImageUrl = largeImageUrl;
+      }
+
+    }
+
+  }
+
+
+  public static class Aired {
+
+    @Expose(serialize = false, deserialize = true)
+    private Instant from;
+
+    @Expose(serialize = false, deserialize = true)
+    private Instant to;
+
+    @Expose(serialize = false, deserialize = true)
+    private Prop prop;
+
+    @Expose(serialize = false, deserialize = true)
+    private String string;
+
+
+    public Instant getFrom() {
+      return from;
+    }
+
+    public void setFrom(Instant from) {
+      this.from = from;
+    }
+
+    public Instant getTo() {
+      return to;
+    }
+
+    public void setTo(Instant to) {
+      this.to = to;
+    }
+
+    public Prop getProp() {
+      return prop;
+    }
+
+    public void setProp(Prop prop) {
+      this.prop = prop;
+    }
+
+    public String getString() {
+      return string;
+    }
+
+    public void setString(String string) {
+      this.string = string;
+    }
+
+
+    public static class Prop {
+
+      @Expose(serialize = false, deserialize = true)
+      private FromTo from;
+
+      @Expose(serialize = false, deserialize = true)
+      private FromTo to;
+
+
+      public FromTo getFrom() {
+        return from;
+      }
+
+      public void setFrom(FromTo from) {
+        this.from = from;
+      }
+
+      public FromTo getTo() {
+        return to;
+      }
+
+      public void setTo(FromTo to) {
+        this.to = to;
+      }
+
+
+      public static class FromTo {
+
+        @Expose(serialize = false, deserialize = true)
+        private int day;
+
+        @Expose(serialize = false, deserialize = true)
+        private int month;
+
+        @Expose(serialize = false, deserialize = true)
+        private int year;
+
+
+        public int getDay() {
+          return day;
+        }
+
+        public void setDay(int day) {
+          this.day = day;
+        }
+
+        public int getMonth() {
+          return month;
+        }
+
+        public void setMonth(int month) {
+          this.month = month;
+        }
+
+        public int getYear() {
+          return year;
+        }
+
+        public void setYear(int year) {
+          this.year = year;
+        }
+
       }
 
     }

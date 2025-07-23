@@ -26,7 +26,7 @@ import picocli.CommandLine.Spec;
  * Uses NASA APOD API to retrieve one or more Astronomy Pictures of the Day, displaying the textual
  * information (by default), and optionally downloading any images.
  */
-@Command(name = "apod", requiredOptionMarker = '*', sortSynopsis = false, sortOptions = false)
+@Command(name = "animate", requiredOptionMarker = '*', sortSynopsis = false, sortOptions = false)
 public class AnimeRetriever implements Callable<Integer> {
 
   private static final Pattern FILENAME_PATTERN = Pattern.compile("^.*/([^/]+\\.([^/.]+))$");

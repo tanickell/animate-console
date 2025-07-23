@@ -1,6 +1,8 @@
 package edu.cnm.deepdive.animate.view;
 
 import edu.cnm.deepdive.animate.model.Anime;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ResourceBundle;
 
 public class AnimeView {
@@ -20,7 +22,7 @@ public class AnimeView {
 
   public String render(Anime anime) {
     return attributesFormat.formatted(
-//        anime.getDate(),
+        OffsetDateTime.parse(anime.getAired().getFrom().toString()).toLocalDate(),
         anime.getTitle().strip(),
 //        anime.getExplanation().strip(),
 //        anime.getMediaType(),
