@@ -53,7 +53,7 @@ public class AnimeRetriever implements Callable<Integer> {
       index = "0..1",
       description = "date (in YYYY-MM-DD format) or date range of desired Animes"
   )
-  private LocalDate[] dates = {LocalDate.now()}; // declaration-with-assignment abbreviation
+  private LocalDate[] dates; // = {LocalDate.now()}; // declaration-with-assignment abbreviation
 
   @Option(
       names = {"--name"}, arity = "1", paramLabel = "NAME",
@@ -160,7 +160,7 @@ public class AnimeRetriever implements Callable<Integer> {
 
   private Anime[] retrieveAnimes() throws IOException {
     Anime[] animes;
-    if (dates.length == 0) {
+    if (dates == null) {
       animes = new Anime[]{service.getAnime(54492)};
     } else if (dates.length == 1){
       //animes = service.getAnimes(dates[0]);                //***** FOR NOW, DO NOTHING *****

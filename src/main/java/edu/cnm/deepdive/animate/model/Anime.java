@@ -9,7 +9,11 @@ import java.util.List;
 public class Anime {
 
   @Expose(serialize = false, deserialize = true)
+  private Images images;
+
+  @Expose(serialize = false, deserialize = true)
   private String title;
+
 
   Anime(String title) {
     this.title = title;
@@ -21,6 +25,117 @@ public class Anime {
 
   public void setTitle(String title) {
     this.title = title;
+  }
+
+
+  private static class Images {
+
+    @Expose(serialize = false, deserialize = true)
+    private Jpg jpg;
+
+    @Expose(serialize = false, deserialize = true)
+    private Webp webp;
+
+
+    public Jpg getJpg() {
+      return jpg;
+    }
+
+    public void setJpg(Jpg jpg) {
+      this.jpg = jpg;
+    }
+
+    public Webp getWebp() {
+      return webp;
+    }
+
+    public void setWebp(Webp webp) {
+      this.webp = webp;
+    }
+
+
+    private static class Jpg {
+
+      @Expose(serialize = false, deserialize = true)
+      @SerializedName("image_url")
+      private String imageUrl;
+
+      @Expose(serialize = false, deserialize = true)
+      @SerializedName("small_image_url")
+      private String smallImageUrl;
+
+      @Expose(serialize = false, deserialize = true)
+      @SerializedName("large_image_url")
+      private String largeImageUrl;
+
+
+      public String getImageUrl() {
+        return imageUrl;
+      }
+
+      public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+      }
+
+      public String getSmallImageUrl() {
+        return smallImageUrl;
+      }
+
+      public void setSmallImageUrl(String smallImageUrl) {
+        this.smallImageUrl = smallImageUrl;
+      }
+
+      public String getLargeImageUrl() {
+        return largeImageUrl;
+      }
+
+      public void setLargeImageUrl(String largeImageUrl) {
+        this.largeImageUrl = largeImageUrl;
+      }
+
+    }
+
+    private static class Webp {
+
+      @Expose(serialize = false, deserialize = true)
+      @SerializedName("image_url")
+      private String imageUrl;
+
+      @Expose(serialize = false, deserialize = true)
+      @SerializedName("small_image_url")
+      private String smallImageUrl;
+
+      @Expose(serialize = false, deserialize = true)
+      @SerializedName("large_image_url")
+      private String largeImageUrl;
+
+
+      public String getImageUrl() {
+        return imageUrl;
+      }
+
+      public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+      }
+
+      public String getSmallImageUrl() {
+        return smallImageUrl;
+      }
+
+      public void setSmallImageUrl(String smallImageUrl) {
+        this.smallImageUrl = smallImageUrl;
+      }
+
+      public String getLargeImageUrl() {
+        return largeImageUrl;
+      }
+
+      public void setLargeImageUrl(String largeImageUrl) {
+        this.largeImageUrl = largeImageUrl;
+      }
+
+    }
+
   }
 
 

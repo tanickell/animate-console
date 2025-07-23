@@ -6,7 +6,7 @@ import java.util.ResourceBundle;
 public class AnimeView {
 
   private static final String BUNDLE_NAME = "strings";
-  private static final String ATTRIBUTES_FORMAT_KEY = "attributes_format";
+  private static final String ATTRIBUTES_FORMAT_KEY = "attributes_format_animate";
   private static final String NO_CONTENT_KEY = "no_content";
 
   private final String attributesFormat;
