@@ -161,7 +161,7 @@ public class AnimeRetriever implements Callable<Integer> {
   private Anime[] retrieveAnimes() throws IOException {
     Anime[] animes;
     if (dates == null) {
-      animes = new Anime[]{service.getAnime(54492)};
+      animes = new Anime[]{service.getAnime(54492)}; // "Kusuriya no Hitorigoto" by default
     } else if (dates.length == 1){
       //animes = service.getAnimes(dates[0]);                //***** FOR NOW, DO NOTHING *****
       animes = new Anime[]{};

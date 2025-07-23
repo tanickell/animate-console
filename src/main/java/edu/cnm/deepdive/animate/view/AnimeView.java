@@ -21,11 +21,11 @@ public class AnimeView {
   public String render(Anime anime) {
     return attributesFormat.formatted(
 //        anime.getDate(),
-        anime.getTitle().strip()
+        anime.getTitle().strip(),
 //        anime.getExplanation().strip(),
 //        anime.getMediaType(),
-//        ifNull(anime.getUrl(), noContent),
-//        ifNull(anime.getHdurl(), noContent),
+        ifNull(anime.getImages().getJpg().getImageUrl(), noContent),
+        ifNull(anime.getImages().getJpg().getLargeImageUrl(), noContent)                                 //         ifNull(anime.getUrl(), noContent), ifNull(anime.getHdurl(), noContent)
 //        ((String) ifNull(anime.getCopyright(), noContent)).strip()
     );
   }

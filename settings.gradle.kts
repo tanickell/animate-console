@@ -23,7 +23,7 @@ pluginManagement {
     }
 }
 
-rootProject.name = "nasa-apod"
+rootProject.name = "animate-console"
 
 @Suppress("UnstableApiUsage")
 dependencyResolutionManagement {

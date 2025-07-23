@@ -19,6 +19,15 @@ public class Anime {
     this.title = title;
   }
 
+
+  public Images getImages() {
+    return images;
+  }
+
+  public void setImages(Images images) {
+    this.images = images;
+  }
+
   public String getTitle() {
     return title;
   }
@@ -28,7 +37,7 @@ public class Anime {
   }
 
 
-  private static class Images {
+  public static class Images {
 
     @Expose(serialize = false, deserialize = true)
     private Jpg jpg;
@@ -54,7 +63,7 @@ public class Anime {
     }
 
 
-    private static class Jpg {
+    public static class Jpg {
 
       @Expose(serialize = false, deserialize = true)
       @SerializedName("image_url")
@@ -95,7 +104,7 @@ public class Anime {
 
     }
 
-    private static class Webp {
+    public static class Webp {
 
       @Expose(serialize = false, deserialize = true)
       @SerializedName("image_url")
