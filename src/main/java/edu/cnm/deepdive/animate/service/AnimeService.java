@@ -7,6 +7,7 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import edu.cnm.deepdive.animate.model.Anime;
+import edu.cnm.deepdive.animate.model.Anime.InstanceWrapper;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
@@ -25,7 +26,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class AnimeService {
 
   private final AnimeProxy proxy;
-  private final String apiKey;
+  // private final String apiKey;
 
   public AnimeService() throws IOException {
     Gson gson = new GsonBuilder()
@@ -40,26 +41,27 @@ public class AnimeService {
     proxy = new Retrofit.Builder()
         .client(client)
         .addConverterFactory(GsonConverterFactory.create(gson))
-        .baseUrl(getLocalProperty("base_url"))
+        .baseUrl(getLocalProperty("base_url_animate"))
         .build()
         .create(AnimeProxy.class);
-    apiKey = getLocalProperty("api_key");
+//    apiKey = getLocalProperty("api_key");
   }
 
-  public Anime getApod(LocalDate date) throws IOException {
-    Response<Anime> response = proxy.get(date, apiKey).execute(); // returns a Call<Anime> object //returns a Response<Anime> --> wait for the response to come back, get that response, then return
+  public Anime getAnime(int malId) throws IOException {
+    Response<InstanceWrapper> response = proxy.get(malId).execute(); // returns a Call<Anime> object //returns a Response<Anime> --> wait for the response to come back, get that response, then return
     if (!response.isSuccessful()) {
       throw new RuntimeException();
     }
-    return response.body();
+    System.out.println("response body is: " + response.body());
+    return (response.body() != null) ? response.body().getData() : null;
   }
-  public Anime[] getApods(LocalDate startDate, LocalDate endDate) throws IOException {
-    Response<Anime[]> response = proxy.get(startDate, endDate, apiKey).execute();
-    if (!response.isSuccessful()) {
-      throw new RuntimeException();
-    }
-    return response.body();
-  }
+//  public Anime[] getApods(LocalDate startDate, LocalDate endDate) throws IOException {
+//    Response<Anime[]> response = proxy.get(startDate, endDate, apiKey).execute();
+//    if (!response.isSuccessful()) {
+//      throw new RuntimeException();
+//    }
+//    return response.body();
+//  }
 
   public InputStream getImageStream(URL url) throws IOException {
     Response<ResponseBody> response = proxy.download(url.toString()).execute(); // proxy.download returns black box; execute presses red button on the box

@@ -41,12 +41,31 @@ public class AnimeRetriever implements Callable<Integer> {
   @Spec
   private CommandSpec spec;
 
+//  @SuppressWarnings("FieldMayBeFinal")
+//  @Parameters(
+//      index = "0..1",
+//      description = "date (in YYYY-MM-DD format) or date range of desired APOD(s)"
+//  )
+//  private LocalDate[] dates = {LocalDate.now()}; // declaration-with-assignment abbreviation
+
   @SuppressWarnings("FieldMayBeFinal")
   @Parameters(
       index = "0..1",
-      description = "date (in YYYY-MM-DD format) or date range of desired APOD(s)"
+      description = "date (in YYYY-MM-DD format) or date range of desired Animes"
   )
   private LocalDate[] dates = {LocalDate.now()}; // declaration-with-assignment abbreviation
+
+  @Option(
+      names = {"--name"}, arity = "1", paramLabel = "NAME",
+      description = "name of Anime to search"
+  )
+  private String searchName;
+
+  @Option(
+      names = {"--id"}, arity = "1", paramLabel = "ID",
+      description = "MyAnimeList id of Anime to retrieve"
+  )
+  private String searchId;
 
   @Option(
       names = {"-m", "--mute"},
@@ -96,7 +115,7 @@ public class AnimeRetriever implements Callable<Integer> {
   @Override
   public Integer call() {
     try {
-      Anime[] animes = retrieveApods();
+      Anime[] animes = retrieveAnimes();
       displayProperties(animes);
       //downloadImages(animes);
       return 0;
@@ -127,13 +146,29 @@ public class AnimeRetriever implements Callable<Integer> {
     }
   }
 
-  private Anime[] retrieveApods() throws IOException {
+  // *****APOD VERSION (REFACTORED) -- REWORK LATER*****
+//  private Anime[] retrieveAnimes() throws IOException {
+//    Anime[] animes;
+//    if (dates.length == 1) {
+//      animes = new Anime[]{service.getAnime(dates[0])};
+//    } else {
+//      Arrays.sort(dates);
+//      animes = service.getAnimes(dates[0], dates[1]);
+//    }
+//    return animes;
+//  }
+
+  private Anime[] retrieveAnimes() throws IOException {
     Anime[] animes;
-    if (dates.length == 1) {
-      animes = new Anime[]{service.getApod(dates[0])};
+    if (dates.length == 0) {
+      animes = new Anime[]{service.getAnime(54492)};
+    } else if (dates.length == 1){
+      //animes = service.getAnimes(dates[0]);                //***** FOR NOW, DO NOTHING *****
+      animes = new Anime[]{};
     } else {
       Arrays.sort(dates);
-      animes = service.getApods(dates[0], dates[1]);
+      //animes = service.getAnimes(dates[0], dates[1]);
+      animes = new Anime[]{};
     }
     return animes;
   }
