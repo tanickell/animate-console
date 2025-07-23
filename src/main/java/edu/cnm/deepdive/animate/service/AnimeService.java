@@ -1,4 +1,4 @@
-package edu.cnm.deepdive.apod.service;
+package edu.cnm.deepdive.animate.service;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -6,13 +6,12 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
-import edu.cnm.deepdive.apod.model.Apod;
+import edu.cnm.deepdive.animate.model.Anime;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Properties;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -23,12 +22,12 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ApodService {
+public class AnimeService {
 
-  private final ApodProxy proxy;
+  private final AnimeProxy proxy;
   private final String apiKey;
 
-  public ApodService() throws IOException {
+  public AnimeService() throws IOException {
     Gson gson = new GsonBuilder()
         .excludeFieldsWithoutExposeAnnotation() // returns the builder again, but configured
         .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer())
@@ -43,19 +42,19 @@ public class ApodService {
         .addConverterFactory(GsonConverterFactory.create(gson))
         .baseUrl(getLocalProperty("base_url"))
         .build()
-        .create(ApodProxy.class);
+        .create(AnimeProxy.class);
     apiKey = getLocalProperty("api_key");
   }
 
-  public Apod getApod(LocalDate date) throws IOException {
-    Response<Apod> response = proxy.get(date, apiKey).execute(); // returns a Call<Anime> object //returns a Response<Anime> --> wait for the response to come back, get that response, then return
+  public Anime getApod(LocalDate date) throws IOException {
+    Response<Anime> response = proxy.get(date, apiKey).execute(); // returns a Call<Anime> object //returns a Response<Anime> --> wait for the response to come back, get that response, then return
     if (!response.isSuccessful()) {
       throw new RuntimeException();
     }
     return response.body();
   }
-  public Apod[] getApods(LocalDate startDate, LocalDate endDate) throws IOException {
-    Response<Apod[]> response = proxy.get(startDate, endDate, apiKey).execute();
+  public Anime[] getApods(LocalDate startDate, LocalDate endDate) throws IOException {
+    Response<Anime[]> response = proxy.get(startDate, endDate, apiKey).execute();
     if (!response.isSuccessful()) {
       throw new RuntimeException();
     }

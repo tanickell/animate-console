@@ -1,9 +1,8 @@
-package edu.cnm.deepdive.apod.controller;
+package edu.cnm.deepdive.animate.controller;
 
-import edu.cnm.deepdive.apod.model.Apod;
-import edu.cnm.deepdive.apod.model.Apod.MediaType;
-import edu.cnm.deepdive.apod.service.ApodService;
-import edu.cnm.deepdive.apod.view.ApodView;
+import edu.cnm.deepdive.animate.model.Anime;
+import edu.cnm.deepdive.animate.service.AnimeService;
+import edu.cnm.deepdive.animate.view.AnimeView;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
@@ -28,15 +27,15 @@ import picocli.CommandLine.Spec;
  * information (by default), and optionally downloading any images.
  */
 @Command(name = "apod", requiredOptionMarker = '*', sortSynopsis = false, sortOptions = false)
-public class ApodRetriever implements Callable<Integer> {
+public class AnimeRetriever implements Callable<Integer> {
 
   private static final Pattern FILENAME_PATTERN = Pattern.compile("^.*/([^/]+\\.([^/.]+))$");
   private static final String PROVIDED_FILENAME_FORMAT = "%1$s.%2$s";
   private static final String MEDIA_TYPE_WARNING_FORMAT =
       "The APOD for %s is not an image. Downloading video (or any media type other than image) is not supported.%n";
 
-  private final ApodService service;
-  private final ApodView view;
+  private final AnimeService service;
+  private final AnimeView view;
   private final PrintStream out;
 
   @Spec
@@ -74,21 +73,21 @@ public class ApodRetriever implements Callable<Integer> {
   private boolean help;
 
   /**
-   * Initializes this instance to use the specified {@link ApodService}, {@link ApodView}, and
+   * Initializes this instance to use the specified {@link AnimeService}, {@link AnimeView}, and
    * {@link PrintStream}.
    *
    * @param service {@code AnimeService} used to communicate with NASA APOD API.
-   * @param view    {@code AnimeView} used to render an {@link Apod} instance to a {@code String}.
+   * @param view    {@code AnimeView} used to render an {@link Anime} instance to a {@code String}.
    * @param out     {@code PrintStream} to which rendered output is sent.
    */
-  public ApodRetriever(ApodService service, ApodView view, PrintStream out) {
+  public AnimeRetriever(AnimeService service, AnimeView view, PrintStream out) {
     this.service = service;
     this.view = view;
     this.out = out;
   }
 
   /**
-   * Retrieves {@link Apod} instance from NASA APOD API, prints its attributes, and optionally
+   * Retrieves {@link Anime} instance from NASA APOD API, prints its attributes, and optionally
    * downloads the image(s).
    *
    * @return Result code, where zero (0) indicates no error, and non-zero indicates some error
@@ -97,61 +96,61 @@ public class ApodRetriever implements Callable<Integer> {
   @Override
   public Integer call() {
     try {
-      Apod[] apods = retrieveApods();
-      displayProperties(apods);
-      downloadImages(apods);
+      Anime[] animes = retrieveApods();
+      displayProperties(animes);
+      //downloadImages(animes);
       return 0;
     } catch (IOException e) {
       return 1; // FIXME: 5/29/25 Display more information.
     }
   }
 
-  private void downloadImages(Apod[] apods) throws IOException {
-    if (stdDefOutput != null || highDefOutput != null) {
-      for (Apod apod : apods) {
-        if (apod.getMediaType() != MediaType.IMAGE) {
-          out.printf(MEDIA_TYPE_WARNING_FORMAT, apod.getDate());
-        } else {
-          downloadImage(stdDefOutput, apod.getUrl());
-          downloadImage(highDefOutput, apod.getHdurl());
-        }
-      }
-    }
-  }
+//  private void downloadImages(Anime[] animes) throws IOException {
+//    if (stdDefOutput != null || highDefOutput != null) {
+//      for (Anime anime : animes) {
+//        if (anime.getMediaType() != MediaType.IMAGE) {
+//          out.printf(MEDIA_TYPE_WARNING_FORMAT, anime.getDate());
+//        } else {
+//          downloadImage(stdDefOutput, anime.getUrl());
+//          downloadImage(highDefOutput, anime.getHdurl());
+//        }
+//      }
+//    }
+//  }
 
-  private void displayProperties(Apod[] apods) {
+  private void displayProperties(Anime[] animes) {
     if (!mute) {
-      for (Apod apod : apods) {
-        String representation = view.render(apod);
+      for (Anime anime : animes) {
+        String representation = view.render(anime);
         out.println(representation);
       }
     }
   }
 
-  private Apod[] retrieveApods() throws IOException {
-    Apod[] apods;
+  private Anime[] retrieveApods() throws IOException {
+    Anime[] animes;
     if (dates.length == 1) {
-      apods = new Apod[]{service.getApod(dates[0])};
+      animes = new Anime[]{service.getApod(dates[0])};
     } else {
       Arrays.sort(dates);
-      apods = service.getApods(dates[0], dates[1]);
+      animes = service.getApods(dates[0], dates[1]);
     }
-    return apods;
+    return animes;
   }
 
-  private void downloadImage(String downloadOption, URL imageUrl) throws IOException {
-    if (downloadOption != null) {
-      Matcher matcher = FILENAME_PATTERN.matcher(imageUrl.toString());
-      if (matcher.matches()) {
-        String filename = (downloadOption.isBlank())
-            ? matcher.group(1)
-            : PROVIDED_FILENAME_FORMAT.formatted(downloadOption, matcher.group(
-                2)); //matcher.replaceAll(stdDefOutput + ".$2"); // stdDefOutput + "." + matcher.group(2)
-        Path output = Paths.get(filename);
-        InputStream input = service.getImageStream(imageUrl);
-        Files.copy(input, output, StandardCopyOption.REPLACE_EXISTING);
-      }
-    }
-  }
+//  private void downloadImage(String downloadOption, URL imageUrl) throws IOException {
+//    if (downloadOption != null) {
+//      Matcher matcher = FILENAME_PATTERN.matcher(imageUrl.toString());
+//      if (matcher.matches()) {
+//        String filename = (downloadOption.isBlank())
+//            ? matcher.group(1)
+//            : PROVIDED_FILENAME_FORMAT.formatted(downloadOption, matcher.group(
+//                2)); //matcher.replaceAll(stdDefOutput + ".$2"); // stdDefOutput + "." + matcher.group(2)
+//        Path output = Paths.get(filename);
+//        InputStream input = service.getImageStream(imageUrl);
+//        Files.copy(input, output, StandardCopyOption.REPLACE_EXISTING);
+//      }
+//    }
+//  }
 
 }
