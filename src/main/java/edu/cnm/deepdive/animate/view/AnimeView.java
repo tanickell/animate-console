@@ -23,17 +23,21 @@ public class AnimeView {
   public String render(Anime anime) {
     return attributesFormat.formatted(
         OffsetDateTime.parse(anime.getAired().getFrom().toString()).toLocalDate(),
-        anime.getTitle().strip(),
-//        anime.getExplanation().strip(),
-//        anime.getMediaType(),
+        ifNullStrip(anime.getTitle(), noContent),
+        ifNullStrip(anime.getSynopsis(), noContent),
+        ifNull(anime.getType(), noContent),
         ifNull(anime.getImages().getJpg().getImageUrl(), noContent),
-        ifNull(anime.getImages().getJpg().getLargeImageUrl(), noContent)                                 //         ifNull(anime.getUrl(), noContent), ifNull(anime.getHdurl(), noContent)
-//        ((String) ifNull(anime.getCopyright(), noContent)).strip()
+        ifNull(anime.getImages().getJpg().getLargeImageUrl(), noContent),                                 //         ifNull(anime.getUrl(), noContent), ifNull(anime.getHdurl(), noContent)
+        anime.getSeason() != null ? anime.getSeason().strip() + " " + anime.getYear() : noContent                      //        ((String) ifNull(anime.getCopyright(), noContent)).strip()
     );
   }
 
   private static Object ifNull(Object preferred, Object alternative) {
     return (preferred != null) ? preferred : alternative;
+  }
+
+  private static String ifNullStrip(String preferred, String alternative) {
+    return (preferred != null) ? preferred.strip() : alternative;
   }
 
 }

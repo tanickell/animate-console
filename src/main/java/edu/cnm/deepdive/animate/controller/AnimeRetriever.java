@@ -68,6 +68,12 @@ public class AnimeRetriever implements Callable<Integer> {
   private String searchId;
 
   @Option(
+      names = {"--now"},
+      description = "flag to change from single retrieval to multi"
+  )
+  private boolean now;
+
+  @Option(
       names = {"-m", "--mute"},
       description = "flag to mute (silence) display of Astronomy Picture of the Day attributes"
   )
@@ -160,15 +166,16 @@ public class AnimeRetriever implements Callable<Integer> {
 
   private Anime[] retrieveAnimes() throws IOException {
     Anime[] animes;
-    if (dates == null) {
+    if (!now && searchId == null) {
       animes = new Anime[]{service.getAnime(54492)}; // "Kusuriya no Hitorigoto" by default
-    } else if (dates.length == 1){
-      //animes = service.getAnimes(dates[0]);                //***** FOR NOW, DO NOTHING *****
-      animes = new Anime[]{};
+//    } else if (dates.length == 1){
+//      //animes = service.getAnimes(dates[0]);                //***** FOR NOW, DO NOTHING *****
+//      animes = new Anime[]{};
     } else {
-      Arrays.sort(dates);
-      //animes = service.getAnimes(dates[0], dates[1]);
-      animes = new Anime[]{};
+//      Arrays.sort(dates);
+//      animes = service.getAnimes(dates[0], dates[1]);
+//      animes = new Anime[]{};
+      animes = service.getAnimes(true);
     }
     return animes;
   }

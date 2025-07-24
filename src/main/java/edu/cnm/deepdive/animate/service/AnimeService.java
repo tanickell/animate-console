@@ -8,12 +8,14 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import edu.cnm.deepdive.animate.model.Anime;
 import edu.cnm.deepdive.animate.model.Anime.InstanceWrapper;
+import edu.cnm.deepdive.animate.model.Anime.ListWrapper;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Properties;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -54,9 +56,28 @@ public class AnimeService {
     if (!response.isSuccessful()) {
       throw new RuntimeException();
     }
-    System.out.println("response body is: " + response.body());
+    //System.out.println("response body is: " + response.body());
     return (response.body() != null) ? response.body().getData() : null;
   }
+
+    public Anime[] getAnimes(Boolean sfw) throws IOException {
+    Response<ListWrapper> response = proxy.get(sfw).execute();
+    if (!response.isSuccessful()) {
+      throw new RuntimeException();
+    }
+
+    List<Anime> animeList = (response.body() != null ? response.body().getData() : null);
+    if (animeList != null) {
+      Anime[] animes = new Anime[animeList.size()];
+      int index = 0;
+      for (Anime anime : animeList) {
+        animes[index++] = anime;
+      }
+      return animes;
+    }
+    return null;
+  }
+
 //  public Anime[] getApods(LocalDate startDate, LocalDate endDate) throws IOException {
 //    Response<Anime[]> response = proxy.get(startDate, endDate, apiKey).execute();
 //    if (!response.isSuccessful()) {

@@ -16,7 +16,19 @@ public class Anime {
   private String title;
 
   @Expose(serialize = false, deserialize = true)
+  private String synopsis;
+
+  @Expose(serialize = false, deserialize = true)
+  private String season;
+
+  @Expose(serialize = false, deserialize = true)
+  private int year;
+
+  @Expose(serialize = false, deserialize = true)
   private Aired aired;
+
+  @Expose(serialize = false, deserialize = true)
+  private Type type;
 
 
   Anime(String title) {
@@ -40,12 +52,44 @@ public class Anime {
     this.title = title;
   }
 
+  public String getSynopsis() {
+    return synopsis;
+  }
+
+  public void setSynopsis(String synopsis) {
+    this.synopsis = synopsis;
+  }
+
+  public String getSeason() {
+    return season;
+  }
+
+  public void setSeason(String season) {
+    this.season = season;
+  }
+
+  public int getYear() {
+    return year;
+  }
+
+  public void setYear(int year) {
+    this.year = year;
+  }
+
   public Aired getAired() {
     return aired;
   }
 
   public void setAired(Aired aired) {
     this.aired = aired;
+  }
+
+  public Type getType() {
+    return type;
+  }
+
+  public void setType(Type type) {
+    this.type = type;
   }
 
 
@@ -411,6 +455,30 @@ public class Anime {
       }
 
     }
+
+  }
+
+
+  public enum Type {
+
+    @SerializedName("tv")
+    TV,
+    @SerializedName("movie")
+    MOVIE,
+    @SerializedName("ova")
+    OVA,
+    @SerializedName("special")
+    SPECIAL,
+    @SerializedName("ona")
+    ONA,
+    @SerializedName("music")
+    MUSIC,
+    @SerializedName("cm")
+    CM,
+    @SerializedName("pv")
+    PV,
+    @SerializedName("tv_special")
+    TV_SPECIAL;
 
   }
 
